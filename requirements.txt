@@ -1,0 +1,9 @@
+pipenv
+quart
+reactivex
+quart-schema
+black
+pycodestyle
+pylint
+tox
+aiofiles
