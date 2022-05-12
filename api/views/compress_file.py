@@ -9,7 +9,9 @@ import aiofiles
 import asyncio
 import os
 import subprocess
+import uuid
 
+_STATIC_PATH = "/usr/src/api/static"
 
 compress_file = Blueprint("compress_file", __name__, url_prefix="api/v1")
 
@@ -22,15 +24,10 @@ async def remove_file(file_path):
     subprocess.run(["rm", "-rf", file_path])
 
 
-async def convert_base64_to_pdf(archivo_contenido):
+async def convert_base64_to_pdf(archivo_contenido, uncompressed_pdf_path):
     """Convierte el archivo PDF contenido en base64 en "archivo_contenido"
     a un archivo PDF y lo guarda localmente.
     """
-    # Define la ruta local del archivo PDF que será generado
-    uncompressed_pdf_path = "{}/uncompressed/{}".format(
-        STATIC_PATH, req_body.get("archivo_nombre")
-    )
-
     # Genera el archivo PDF decodificando primero
     async with aiofiles.open(uncompressed_pdf_path, mode="wb") as f:
         await f.write(b64decode(archivo_contenido))
@@ -38,16 +35,11 @@ async def convert_base64_to_pdf(archivo_contenido):
         return uncompressed_pdf_path
 
 
-async def get_pdf_from_url(archivo_ruta):
+async def get_pdf_from_url(archivo_ruta, uncompressed_pdf_path):
     """
     Descarga y almacena localmente el archivo PDF de la URL en
     "archivo_ruta".
     """
-    # Define la ruta local del archivo PDF que será generado
-    uncompressed_pdf_path = "{}/uncompressed/{}".format(
-        STATIC_PATH, req_body.get("archivo_nombre")
-    )
-
     # Descarga y guarda el archivo localmente
     uncompressed_pdf_path, _ = await urllib_request.urlretrieve(
         archivo_ruta, uncompressed_pdf_path
@@ -118,14 +110,14 @@ def make_response(
     archivo_nombre=None,
     archivo_ruta=None,
     archivo_contenido=None,
-):
+) -> dict:
     return {
-        "resultado": resultado if bool(resultado) else "",
-        "info": info if bool(info) else "",
-        "error": error if bool(error) else "",
+        "resultado": resultado if resultado else "",
+        "info": info if info else "",
+        "error": error if error else "",
         "archivo_nombre": archivo_nombre,
-        "archivo_ruta": archivo_ruta if bool(archivo_ruta) else "",
-        "archivo_contenido": archivo_contenido if bool(archivo_contenido) else "",
+        "archivo_ruta": archivo_ruta if archivo_ruta else "",
+        "archivo_contenido": archivo_contenido if archivo_contenido else "",
     }
 
 
@@ -140,13 +132,19 @@ async def compress_handler(data: Archivo):
     # Verificar si request contiene el "archivo_contenido".
     is_base64 = bool(req_body.get("archivo_contenido"))
 
+    # Definir un nombre de archivo único para los archivos PDF que serán generados
+    file_name = str(uuid.uuid4())
+    uncompressed_pdf_path = "{}/uncompressed/{}.pdf".format(_STATIC_PATH, file_name)
+    compressed_pdf_path = "{}/compressed/{}.pdf".format(_STATIC_PATH, file_name)
+
     # Preparar el archivo PDF para comprimirlo.
     try:
-        uncompressed_pdf_path = (
-            await convert_base64_to_pdf(req_body.get("archivo_contenido"))
-            if is_base64
-            else await get_pdf_from_url(req_body.get("archivo_ruta"))
+        await convert_base64_to_pdf(
+            req_body.get("archivo_contenido"), uncompressed_pdf_path
+        ) if is_base64 else await get_pdf_from_url(
+            req_body.get("archivo_ruta"), uncompressed_pdf_path
         )
+
     except BaseException as err:
         return (
             make_response(

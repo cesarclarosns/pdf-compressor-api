@@ -19,7 +19,8 @@ RUN apt-get update && \
     apt-get install -y ghostscript && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists && \
-    pip install -r requirements.txt
+    pip install pipenv && \
+    pipenv install
 
 # Copy the rest of the files
 COPY . .
