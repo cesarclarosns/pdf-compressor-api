@@ -1,6 +1,2 @@
-Generar nombres únicos para los archivos PDF.
-Hacer get_pdf_from_url asíncrono
-Hacer remove_file asíncrono
-Implementar tests
-
-
+Implementar tests.
+Montar volumenes para que el contenedor pueda acceder a los archivos del host.

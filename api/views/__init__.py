@@ -1,3 +1,4 @@
-from api.views.compress_file import compress_file
+from quart import Blueprint
+from .compress_documents import compress_documents
 
-blueprints = [compress_file]
+blueprints = [compress_documents]

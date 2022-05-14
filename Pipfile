@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pipenv = "*"
 quart = "*"
 quart-schema = "*"
 tox = "*"
@@ -14,6 +13,7 @@ pycodestyle = "*"
 pylint = "*"
 pytest = "*"
 pytest-asyncio = "*"
+hypercorn = "*"
 
 [dev-packages]
 

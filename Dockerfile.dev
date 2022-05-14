@@ -1,0 +1,32 @@
+# Nota: El orden de estas instrucciones es importante porque Docker puede
+# emplear caching para construir los contenedores.
+
+# La imágen base para crear el contenedor.
+FROM python:3.10-slim-bullseye
+
+# Definir el directorio de trabajo.
+WORKDIR /usr/src
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# Instalar todo lo necesario para que la API funcione.
+COPY requirements.txt Pipfile Pipfile.lock ./
+RUN apt-get update && \
+    apt-get install -y ghostscript && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists && \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt && \
+    pip install pipenv && \
+    pipenv install
+
+# Copiar el resto de los archivos al directorio de trabajo.
+COPY . .
+
+# Comando para que el contenedor se mantenga corriendo por siempre.
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+
+# Esto es solo de referencia.
+EXPOSE 5000
+
