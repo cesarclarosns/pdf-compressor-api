@@ -39,6 +39,27 @@ Puedes acceder a la documentación de esta API en la ruta "/docs".
 
 ## ¿Cómo continuar con el desarrollo de esta API usando VSCode dentro de este contenedor?
 
+Para esto se debe tener instalado VSCode y la extensión para VSCode "Remote - Containers".
+
+En este caso se iniciará el contenedor usando el archivo "docker-compose.dev.yml":
+
+```bash
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+El siguiente paso es adjuntar VSCode al contenedor remoto. Para esto se abre la ventana de comandos de VSCode (CTRL + SHIFT + P en Windows), se escribe "attach to running container" y se selecciona la opción que nos da la extensión "Remote-Containers".
+
+![Attach to running container](./static/attach-to-running-container.png)
+
+Y se selecciona el contenedor.
+![Select container](./static/select-container.png)
+
+Por último se selecciona el directorio de trabajo, el cual es "/usr/src" en el contenedor:
+![Select workir](./static/select-workdir.png)
+
+Y listo, ya se tendrá el mismo entorno de producción para desarrollo con las paqueterías cargadas.
+![Dev env](./static/dev-env.png)
+
 ## Aprender más sobre Docker
 
 https://www.youtube.com/watch?v=3c-iBn73dDE&ab_channel=TechWorldwithNana
