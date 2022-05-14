@@ -18,6 +18,16 @@ Ejecutar este comando para iniciar la API en modo producción en segundo plano u
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
+Si ejecutas el siguiente comando deberías de poder ver el contenedor corriendo.
+
+```bash
+docker ps
+```
+
+En este caso se observa que el puerto 5000 en el contenedor (5000/tcp) está siendo mapeado con el puerto 5000 del host (0.0.0.0:5000):
+
+![docker-ps](./static/docker-ps.png)
+
 Para detener contenedores y eliminar contenedores, redes, volúmenes e imágenes creados por el anterior comando ejecutar:
 
 ```bash
