@@ -117,7 +117,7 @@ async def compress_handler(data: DocumentRequest):
                         req_body["archivo_contenido"], uncompressed_pdf_path
                     )
                 else:
-                    if os.path.exists(uncompressed_pdf_path):
+                    if not os.path.exists(uncompressed_pdf_path):
                         raise BaseException("El archivo no existe.")
             except BaseException as err:
                 return (
