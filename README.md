@@ -24,7 +24,7 @@ Para detener contenedores y eliminar contenedores, redes, volúmenes e imágenes
 docker-compose -f docker-compose.prod.yml down
 ```
 
-Puedes acceder a la documentación de esta API en "/docs".
+Puedes acceder a la documentación de esta API en la ruta "/docs".
 
 ## ¿Cómo continuar con el desarrollo de esta API usando VSCode dentro de este contenedor?
 
