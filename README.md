@@ -57,7 +57,7 @@ Y se selecciona el contenedor.
 Por último se selecciona el directorio de trabajo, el cual es "/usr/src" en el contenedor:
 ![Select workir](./static/select-workdir.png)
 
-Y listo, ya se tendrá el mismo entorno de producción para desarrollo con las paqueterías cargadas.
+Y listo, ya se tendrá el mismo entorno de producción para desarrollo con las paqueterías cargadas. Debido al binding que se hace, los cambios que realices en este entorno se verán reflejados en el directorio local donde tienes el repositorio.
 ![Dev env](./static/dev-env.png)
 
 ## Aprender más sobre Docker
