@@ -6,7 +6,7 @@ Por el momento esta API solo sirve para comprimir archivos PDF.
 
 Tener Docker instalado.
 
-## ¿Cómo implementar esta API?
+## ¿Cómo llevar a producción esta API?
 
 Para correr esta API se hace uso del comando "docker-compose", el cual sirve para definir y ejecutar aplicaciones Docker de varios contenedores apartir de un archivo ".yml" que contendrá toda la configuración.
 
