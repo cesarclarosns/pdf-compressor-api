@@ -1,6 +1,6 @@
 # API para procesar documentos
 
-Por el momento esta API desarrollada con Quart framework solo sirve para comprimir archivos PDF.
+Por el momento esta API desarrollada con Quart framework solo sirve para comprimir archivos PDF en base64.
 
 ## Requisitos
 
