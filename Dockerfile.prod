@@ -2,7 +2,7 @@
 # emplear caching para construir los contenedores.
 
 # La imágen base para crear el contenedor.
-FROM python:3.10-slim-bullseye
+FROM python:3.10-alpine
 
 # Definir el directorio de trabajo.
 WORKDIR /usr/src
@@ -12,9 +12,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 # Instalar todo lo necesario para que la API funcione.
 COPY requirements.txt ./
-RUN apt-get update && \
-    apt-get install -y ghostscript && \
-    apt-get clean && \
+RUN apk update && \
+    apk add ghostscript && \
     rm -rf /var/lib/apt/lists && \
     pip install --upgrade pip && \
     pip install -r requirements.txt

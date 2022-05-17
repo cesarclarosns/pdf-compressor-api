@@ -1,10 +1,6 @@
 version: "3.7"
 services:
   api-prod:
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
+    image: cesarclarosns/pdf-compressor-api:0.1
     ports:
       - "5000:5000"
-    volumes:
-      - ./:/usr/src

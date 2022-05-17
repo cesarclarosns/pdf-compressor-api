@@ -37,4 +37,4 @@ def error_handling_404(error):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=5000)

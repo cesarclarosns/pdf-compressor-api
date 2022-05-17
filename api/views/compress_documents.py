@@ -6,7 +6,7 @@ import asyncio
 import uuid
 import os
 
-from ..utils.compress_documents_schemas import DocumentRequest, DocumentResponse
+from ..utils import DocumentRequest, DocumentResponse
 
 
 compress_documents = Blueprint("compress_documents", __name__, url_prefix="/compress")
@@ -55,9 +55,6 @@ async def compress_pdf(uncompressed_pdf_path: str, compressed_pdf_path: str) -> 
     )
     stdout, stderr = await proc.communicate()
 
-    if stderr:
-        raise BaseException("{}".format(stderr))
-
 
 async def convert_pdf_to_base64(compressed_pdf_path: str) -> bytes:
     """Convierte el archivo PDF comprimido con ruta "compressed_pdf_path" a base64
@@ -68,20 +65,20 @@ async def convert_pdf_to_base64(compressed_pdf_path: str) -> bytes:
 
 
 def make_response(
-    resultado=None,
-    info=None,
-    error=None,
-    archivo_nombre=None,
-    archivo_ruta=None,
-    archivo_contenido=None,
-):
+    resultado: str = "",
+    info: str = "",
+    error: str = "",
+    archivo_nombre: str = "",
+    archivo_ruta: str = "",
+    archivo_contenido: str = "",
+) -> dict:
     return {
-        "resultado": resultado if resultado else "",
-        "info": info if info else "",
-        "error": error if error else "",
+        "resultado": resultado,
+        "info": info,
+        "error": error,
         "archivo_nombre": archivo_nombre,
-        "archivo_ruta": archivo_ruta if archivo_ruta else "",
-        "archivo_contenido": archivo_contenido if archivo_contenido else "",
+        "archivo_ruta": archivo_ruta,
+        "archivo_contenido": archivo_contenido,
     }
 
 

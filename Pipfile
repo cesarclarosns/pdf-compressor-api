@@ -6,16 +6,16 @@ name = "pypi"
 [packages]
 quart = "*"
 quart-schema = "*"
-tox = "*"
 aiofiles = "*"
-black = "*"
-pycodestyle = "*"
-pylint = "*"
-pytest = "*"
-pytest-asyncio = "*"
 hypercorn = "*"
 
 [dev-packages]
+black = "*"
+pylint = "*"
+pytest = "*"
+pytest-asyncio = "*"
+tox = "*"
+pycodestyle = "*"
 
 [requires]
 python_version = "3.10"

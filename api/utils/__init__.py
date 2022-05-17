@@ -1,0 +1,1 @@
+from .compress_documents_schemas import DocumentRequest, DocumentResponse

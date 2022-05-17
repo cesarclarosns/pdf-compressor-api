@@ -4,23 +4,27 @@ Por el momento esta API desarrollada con Quart framework solo sirve para comprim
 
 ## Requisitos
 
-Tener Docker instalado.
+Tener Docker instalado (Docker Engine).
 
 ## ¿Cómo llevar a producción esta API?
 
-Para correr esta API se hace uso del comando "docker-compose", el cual sirve para definir y ejecutar aplicaciones Docker de varios contenedores apartir de un archivo ".yml" que contendrá toda la configuración.
+Esta API se puede correr de dos formas actualmente:
 
-En este caso se hará uso del archivo "docker-compose.prod.yml".
+En la primer forma solo se necesita correr el siguiente comando. El cual descargará la imagen del contenedor (la aplicación) desde el repositorio de imágenes de contenedores Docker Hub, mapeará el puerto "5000" del host con el puerto "5000" del contenedor (-p "5000:5000") y mantendrá el contenedor corriendo en segundo plano con el flag "-d" :
 
-Ejecutar este comando para iniciar la API en modo producción en segundo plano usando el flag "-d". La API podrá ser accesada en el puerto 5000 del host como se indica en el archivo "docker-compose.prod.yml".
+```docker
+docker run -p "5000:5000" -d cesarclarosns/pdf-compressor-api:0.1
+```
 
-```bash
+En la segunda forma se hace uso de "docker-compose" el cual sirve para definir y ejecutar aplicaciones Docker de varios contenedores apartir de un archivo ".yml" que contendrá toda la configuración. En este caso se usará el archivo "docker-compose.prod.yml", la configuración que está en este archivo es la misma que en el comando con `docker run`.
+
+```docker
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
 Si ejecutas el siguiente comando deberías de poder ver el contenedor corriendo.
 
-```bash
+```docker
 docker ps
 ```
 
@@ -59,6 +63,12 @@ Por último se selecciona el directorio de trabajo, el cual es "/usr/src" en el 
 
 Y listo, ya se tendrá el mismo entorno de producción para desarrollo con las paqueterías cargadas. Debido al binding que se hace, los cambios que realices en este entorno se verán reflejados en el directorio local donde tienes el repositorio.
 ![Dev env](./static/dev-env.png)
+
+## Consideraciones al construir la imágen del contenedor que se usará en producción para subirla a un repositorio
+
+No incluir los archivos que no se necesiten para correr la aplicación haciendo uso del archivo ".dockerignore".
+
+En este caso se está usando `pipenv` para manejar las dependencias.
 
 ## Aprender más sobre Docker
 
