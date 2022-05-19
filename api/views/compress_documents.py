@@ -5,8 +5,11 @@ import aiofiles
 import asyncio
 import uuid
 import os
+import sys
 
-from ..utils import DocumentRequest, DocumentResponse
+sys.path.append("/usr/src/api")
+
+from utils import DocumentRequest, DocumentResponse
 
 
 compress_documents = Blueprint("compress_documents", __name__, url_prefix="/compress")
@@ -28,7 +31,7 @@ async def convert_base64_to_pdf(
         await f.write(decoded_data)
 
 
-async def compress_pdf(uncompressed_pdf_path: str, compressed_pdf_path: str) -> None:
+async def compress_pdf(uncompressed_pdf_path: str, compressed_pdf_path: str, quality: str) -> None:
     """Comprime el archivo PDF con ruta "uncompressed_pdf_path" usando Ghostscript.
 
     -dPDFSETTINGS: https://www.ghostscript.com/doc/current/VectorDevices.htm#PSPDF_IN
@@ -42,7 +45,7 @@ async def compress_pdf(uncompressed_pdf_path: str, compressed_pdf_path: str) -> 
         "gs",
         "-sDEVICE=pdfwrite",
         "-dCompatibilityLevel=1.4",
-        "-dPDFSETTINGS=/ebook",
+        "-dPDFSETTINGS=/{}".format(quality),
         "-dNOPAUSE",
         "-dBATCH",
         "-sOutputFile={}".format(compressed_pdf_path),
@@ -62,6 +65,9 @@ async def convert_pdf_to_base64(compressed_pdf_path: str) -> bytes:
     async with aiofiles.open(compressed_pdf_path, "rb+") as f:
         encoded_data = b64encode(await f.read())
         return encoded_data
+
+
+
 
 
 def make_response(

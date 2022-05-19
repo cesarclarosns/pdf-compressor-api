@@ -1,6 +1,10 @@
 from quart import Quart
 from quart_schema import QuartSchema, RequestSchemaValidationError
-from .views import blueprints
+import aiofiles
+import os
+import sys
+
+from api.views import blueprints
 
 
 def create_app(name=__name__, blueprints=None):
