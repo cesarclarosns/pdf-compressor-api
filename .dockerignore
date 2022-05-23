@@ -1,11 +1,11 @@
-# Los siguientes archivos se deben ignorar cuando se vaya a construir 
+# Los siguientes archivos se deben ignorar cuando se vaya a construir
 # la imagen que será usada para producción.
 
-# static
-# api/tests
-# docker-compose*
-# Dockerfile*
-# Pipfile
-# Pipfile.lock
-# README.md
-# TODO.txt
+static
+api/tests
+docker-compose*
+Dockerfile*
+Pipfile
+Pipfile.lock
+README.md
+TODO.txt

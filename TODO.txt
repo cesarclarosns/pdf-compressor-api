@@ -1,6 +1,4 @@
-Implementar tests.
 Montar volumenes para que el contenedor pueda acceder a los archivos del host.
-
 
 Proceso para subir imágenes a docker hub
 1. Crear las imágenes

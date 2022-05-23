@@ -4,6 +4,7 @@ import aiofiles
 import os
 import sys
 
+# Importar rutas / vistas.
 from api.views import blueprints
 
 
@@ -22,9 +23,6 @@ def create_app(name=__name__, blueprints=None):
 app = create_app(blueprints=blueprints)
 
 
-text_404 = "La URL solicitada no se encontró en el servidor."
-
-
 @app.errorhandler(405)
 def error_handling_405(error):
     return {"Error": str(error)}, 405
@@ -37,8 +35,7 @@ def error_handling_500(error):
 
 @app.errorhandler(404)
 def error_handling_404(error):
-    return {"Error": str(error), "description": text_404}, 404
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    return {
+        "Error": str(error),
+        "description": "La URL solicitada no se encontró en el servidor.",
+    }, 404

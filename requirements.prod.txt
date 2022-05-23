@@ -18,7 +18,7 @@ itsdangerous==2.1.2; python_version >= '3.7'
 jinja2==3.1.2; python_version >= '3.7'
 markupsafe==2.1.1; python_version >= '3.7'
 priority==2.0.0; python_full_version >= '3.6.1'
-pydantic==1.9.0; python_full_version >= '3.6.1'
+pydantic==1.9.1; python_full_version >= '3.6.1'
 pyhumps==3.7.1
 quart-schema==0.11.1
 quart==0.17.0

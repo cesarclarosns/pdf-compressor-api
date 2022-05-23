@@ -13,10 +13,10 @@ Esta API se puede correr de dos formas actualmente:
 En la primer forma solo se necesita correr el siguiente comando. El cual descargará la imagen del contenedor (la aplicación) desde el repositorio de imágenes de contenedores Docker Hub, mapeará el puerto "5000" del host con el puerto "5000" del contenedor (-p "5000:5000") y mantendrá el contenedor corriendo en segundo plano con el flag "-d" :
 
 ```docker
-docker run -p "5000:5000" -d cesarclarosns/pdf-compressor-api:0.1
+docker run -p "5000:5000" -d cesarclarosns/pdf-compressor-api:2.0
 ```
 
-En la segunda forma se hace uso de "docker-compose" el cual sirve para definir y ejecutar aplicaciones Docker de varios contenedores apartir de un archivo ".yml" que contendrá toda la configuración. En este caso se usará el archivo "docker-compose.prod.yml", la configuración que está en este archivo es la misma que en el comando con `docker run`.
+En la segunda forma se hace uso de "docker-compose" el cual sirve para definir y ejecutar aplicaciones Docker de varios contenedores apartir de un archivo ".yml" que contendrá toda la configuración. En este caso puedes crear un archivo "docker-compose.yml" en tu servidor y copiar el contenido del archivo "docker-compose.prod.yml" de este repositorio, la configuración que está en este archivo es la misma que en el comando con `docker run`.
 
 ```docker
 docker-compose -f docker-compose.prod.yml up -d
@@ -63,6 +63,27 @@ Por último se selecciona el directorio de trabajo, el cual es "/usr/src" en el 
 
 Y listo, ya se tendrá el mismo entorno de producción para desarrollo con las paqueterías cargadas. Debido al binding que se hace, los cambios que realices en este entorno se verán reflejados en el directorio local donde tienes el repositorio.
 ![Dev env](./static/dev-env.png)
+
+También puedes iniciar una terminal interactiva para que puedas correr comandos dentro del contenedor ejecutando el siguiente comando:
+
+```docker
+docker exec -it <CONTAINER_ID> /bin/sh
+```
+
+![Interactive terminal](./static/interactive-terminal.png)
+
+De esta forma podrás correr los tests que fueron implementados para validar el funcionamiento de la API con el siguiente comando:
+
+```python
+pytest
+```
+
+![Running tests](./static/running-tests.png)
+O iniciar el servidor de la API:
+
+```python
+python hypercorn_config.py
+```
 
 ## Consideraciones al construir la imágen del contenedor que se usará en producción para subirla a un repositorio
 

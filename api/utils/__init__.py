@@ -1,1 +1,2 @@
-from .compress_documents_schemas import DocumentRequest, DocumentResponse
+from .schemas import DocumentRequest, DocumentResponse
+from .models import File, PDFCompressor

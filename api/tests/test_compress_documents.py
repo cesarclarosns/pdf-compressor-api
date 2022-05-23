@@ -16,22 +16,14 @@ def app():
     return quart_app
 
 
-# """Tests unitarios (de las funciones de ayuda)."""
+"""
+Tests unitarios (de las funciones de ayuda).
+"""
 
 
-def test_convert_base64_to_pdf(test_input, expected):
-    assert True
-
-
-def test_compress_pdf():
-    assert True
-
-
-def test_convert_pdf_to_base64():
-    assert True
-
-
-"""Tests funcionales (de la API)."""
+"""
+Tests funcionales (de la API).
+"""
 
 
 @pytest.mark.asyncio
@@ -39,6 +31,30 @@ async def test_api_unknown_request(app):
     client = app.test_client()
     response = await client.get("/")
     assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_api_bad_request_invalid_archivo_ruta(app):
+    client = app.test_client()
+    data = {
+        "archivoNombre": "test.pdf",
+        "archivoRuta": "C:\etc\test.pdf",
+        "archivoContenido": "",
+    }
+    response = await client.post("/compress/pdf", json=data)
+    assert response.status_code == 402
+
+
+@pytest.mark.asyncio
+async def test_api_invalid_archivo_contenido(app):
+    client = app.test_client()
+    data = {
+        "archivoNombre": "test.pdf",
+        "archivoRuta": "",
+        "archivoContenido": "....",
+    }
+    response = await client.post("/compress/pdf", json=data)
+    assert response.status_code == 402
 
 
 # Testear si el "archivo_contenido" que se retorna es de un menor tamaño.
@@ -52,22 +68,20 @@ async def test_api_unknown_request(app):
 @pytest.mark.asyncio
 async def test_api_pdf_compression(app, pdf_path):
     async with aiofiles.open(pdf_path, "rb+") as f:
-        encoded_pdf_uncompressed = b64encode(await f.read())
-        test_client = app.test_client()
+        uncompressed_b64 = b64encode(await f.read())
+        client = app.test_client()
         data = {
             "archivoNombre": "test.pdf",
             "archivoRuta": "",
-            "archivoContenido": encoded_pdf_uncompressed,
+            "archivoContenido": uncompressed_b64,
         }
-        response = await test_client.post("/compress/pdf", json=data)
+        response = await client.post("/compress/pdf", json=data)
         result = await response.get_json()
         assert sys.getsizeof(result["archivoContenido"]) < sys.getsizeof(
-            encoded_pdf_uncompressed
+            uncompressed_b64
         )
 
 
-# """Tests de carga."""
-
-
-def test_load_api():
-    assert True
+"""
+Tests de carga.
+"""

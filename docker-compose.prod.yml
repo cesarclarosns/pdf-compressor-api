@@ -1,6 +1,6 @@
 version: "3.7"
 services:
   api-prod:
-    image: cesarclarosns/pdf-compressor-api:0.1
+    image: cesarclarosns/pdf-compressor-api:2.0
     ports:
-      - "5001:5000"
+      - "5000:5000"

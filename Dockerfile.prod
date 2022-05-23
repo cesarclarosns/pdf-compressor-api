@@ -11,12 +11,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 # Instalar todo lo necesario para que la API funcione.
-COPY requirements.txt ./
+COPY requirements.prod.txt ./
 RUN apk update && \
     apk add ghostscript && \
     rm -rf /var/lib/apt/lists && \
     pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install -r requirements.prod.txt
 
 # Copiar el resto de los archivos al directorio de trabajo.
 COPY . .
