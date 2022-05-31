@@ -5,8 +5,7 @@ import sys
 
 sys.path.append("/usr/src/api")
 
-from utils import PDFCompressor
-from utils import DocumentRequest, DocumentResponse
+from utils import PDFCompressor, DocumentRequest, DocumentResponse
 
 
 compress_documents = Blueprint("compress_documents", __name__, url_prefix="/compress")
@@ -22,6 +21,7 @@ def make_response(
     archivo_nombre: str = "",
     archivo_ruta: str = "",
     archivo_contenido: str = "",
+    compresion: str = "",
 ) -> dict:
     return {
         "resultado": resultado,
@@ -30,10 +30,11 @@ def make_response(
         "archivo_nombre": archivo_nombre,
         "archivo_ruta": archivo_ruta,
         "archivo_contenido": archivo_contenido,
+        "compresion": compresion,
     }
 
 
-""" Vistas / Rutas """
+""" Rutas """
 
 
 @compress_documents.route("/pdf", methods=["POST"])
@@ -46,7 +47,6 @@ async def compress_pdf_handler(data: DocumentRequest):
         archivo_contenido=req_body["archivo_contenido"],
         archivo_ruta=req_body["archivo_ruta"],
     )
-
     compression_result = await compressor.start()
 
     return (
@@ -59,6 +59,9 @@ async def compress_pdf_handler(data: DocumentRequest):
             if compression_result["resultado"] == "0"
             else compressor.compressed_b64,
             archivo_ruta=req_body["archivo_ruta"],
+            compresion=""
+            if compression_result["resultado"] == "0"
+            else "{:.2f}%".format(compressor.compresion),
         ),
         402 if compression_result["resultado"] == "0" else 201,
     )

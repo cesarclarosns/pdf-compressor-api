@@ -8,23 +8,23 @@ from sys import getsizeof as sizeof
 
 class File:
     def __init__(self) -> None:
-        self.temp_dir = None
-        self._input = None
-        self._output = None
+        self.temp_dir: str | None = None
+        self._input: str | None = None
+        self._output: str | None = None
 
     @property
-    def input(self):
+    def input(self) -> str:
         if self._input is None:
             self._input = os.path.join(self.temp_dir, "{}.pdf".format(str(uuid4())))
         return self._input
 
     @property
-    def output(self):
+    def output(self) -> str:
         if self._output is None:
             self._output = os.path.join(self.temp_dir, "{}.pdf".format(str(uuid4())))
         return self._output
 
-    def new_output(self):
+    def new_output(self) -> str:
         self._output = os.path.join(self.temp_dir, "{}.pdf".format(str(uuid4())))
         return self._output
 
@@ -32,10 +32,11 @@ class File:
 class PDFCompressor(File):
     def __init__(self, archivo_contenido: str, archivo_ruta: str) -> None:
         super().__init__()
-        self.quality = "ebook"
-        self.uncompressed_b64 = archivo_contenido
-        self.compressed_b64 = None
-        self.archivo_ruta = archivo_ruta
+        self.quality: str = "ebook"
+        self.uncompressed_b64: bytes | None = archivo_contenido
+        self.compressed_b64: bytes | None = None
+        self.archivo_ruta: str | None = archivo_ruta
+        self.compresion: int | None = None
 
     async def convert_b64_to_pdf(self) -> None:
         try:
@@ -80,7 +81,7 @@ class PDFCompressor(File):
         except BaseException as err:
             raise BaseException("El archivo PDF no se pudo comprimir: {}".format(err))
 
-    async def convert_pdf_to_b64(self) -> bytes:
+    async def convert_pdf_to_b64(self) -> None:
         try:
             async with aiofiles.open(self.output, "rb+") as f:
                 self.compressed_b64 = b64encode(await f.read())
@@ -89,7 +90,7 @@ class PDFCompressor(File):
                 "El archivo PDF no se pudo convertir a base64: {}".format(err)
             )
 
-    async def start(self) -> None:
+    async def start(self) -> dict:
         try:
             async with aiofiles.tempfile.TemporaryDirectory() as d:
                 self.temp_dir = d
@@ -97,7 +98,9 @@ class PDFCompressor(File):
                 if self.archivo_ruta:
                     if not os.path.exists(self.archivo_ruta):
                         raise BaseException(
-                            "El archivo en la ruta específicada no existe: '{}'.".format(self.archivo_ruta)
+                            "El archivo en la ruta específicada no existe: '{}'.".format(
+                                self.archivo_ruta
+                            )
                         )
                     self._input = self.archivo_ruta
                 else:
@@ -112,6 +115,10 @@ class PDFCompressor(File):
                     await self.convert_pdf_to_b64()
                     if sizeof(self.compressed_b64) > sizeof(self.uncompressed_b64):
                         raise BaseException("No se pudo reducir el tamaño del archivo.")
+
+                self.compresion = (
+                    1 - (sizeof(self.compressed_b64) / sizeof(self.uncompressed_b64))
+                ) * 100
 
                 return {
                     "resultado": "1",
