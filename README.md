@@ -8,12 +8,12 @@ Tener Docker instalado (Docker Engine).
 
 ## ¿Cómo llevar a producción esta API?
 
-Esta API se puede correr de dos formas actualmente:
+Esta API se puede correr de dos formas actualmente, asumiendo que se tiene acceso a la terminal del servidor:
 
 En la primer forma solo se necesita correr el siguiente comando. El cual descargará la imagen del contenedor (la aplicación) desde el repositorio de imágenes de contenedores Docker Hub, mapeará el puerto "5000" del host con el puerto "5000" del contenedor (-p "5000:5000") y mantendrá el contenedor corriendo en segundo plano con el flag "-d" :
 
 ```docker
-docker run -p "5000:5000" -d cesarclarosns/pdf-compressor-api:2.0
+docker run -p "5000:5000" -d cesarclarosns/pdf-compressor-api:1.0
 ```
 
 En la segunda forma se hace uso de "docker-compose" el cual sirve para definir y ejecutar aplicaciones Docker de varios contenedores apartir de un archivo ".yml" que contendrá toda la configuración. En este caso puedes crear un archivo "docker-compose.yml" en tu servidor y copiar el contenido del archivo "docker-compose.prod.yml" de este repositorio, la configuración que está en este archivo es la misma que en el comando con `docker run`.
